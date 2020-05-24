@@ -17,7 +17,7 @@ x=$(( $x + 1 ))
 	echo "file seg-$x.ts" >> filelist
 	#echo $URL
 	wget -q $URL -O "seg-$x.ts"
-	if [ -e $FILE ]
+	if [ -s $FILE ]
 	then
 		echo "Segment : $x done"
 	else
@@ -25,7 +25,6 @@ x=$(( $x + 1 ))
 		break
 	fi
 done
-cd ../
 echo "==================================="
 echo "finnished downloading on Segment $x"
 echo "starting mp4 conversion"
@@ -34,3 +33,4 @@ echo "==================================="
 ffmpeg -f concat -i filelist -c copy ../output.mp4
 cd ..
 echo "All done!"
+
