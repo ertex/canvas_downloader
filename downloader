@@ -1,0 +1,36 @@
+echo "  "
+BASEURL=$1
+URL=$BASEURL
+FILE=foo
+x=0
+match='seg\-[0-9]'
+repl="seg-1337"
+x=0
+mkdir tmp
+cd tmp
+while :
+do 
+x=$(( $x + 1 ))
+	repl="seg-$x"
+	URL=${BASEURL/$match/$repl}
+	FILE="*seg-$x*"
+	echo "file seg-$x.ts" >> filelist
+	#echo $URL
+	wget -q $URL -O "seg-$x.ts"
+	if [ -e $FILE ]
+	then
+		echo "Segment : $x done"
+	else
+		echo "Segment : $x not found, filename $FILE not found"
+		break
+	fi
+done
+cd ../
+echo "==================================="
+echo "finnished downloading on Segment $x"
+echo "starting mp4 conversion"
+echo "==================================="
+
+ffmpeg -f concat -i filelist -c copy ../output.mp4
+cd ..
+echo "All done!"
