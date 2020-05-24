@@ -32,5 +32,6 @@ echo "==================================="
 
 ffmpeg -f concat -i filelist -c copy ../output.mp4
 cd ..
+rm -rf tmp
 echo "All done!"
 
