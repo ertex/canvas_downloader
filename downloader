@@ -21,9 +21,9 @@ x=$(( $x + 1 ))
 	wget -q $URL -O "seg-$x.ts"
 	if [ -s $FILE ]
 	then
-		echo "Segment : $x done"
+		echo -ne "Segment : $x done\r"
 	else
-		echo "Segment : $x not found, filename $FILE not found"
+		echo -e "\nSegment : $x not found, filename $FILE not found"
 		break
 	fi
 done
