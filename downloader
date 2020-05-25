@@ -1,20 +1,16 @@
 #!/bin/bash
 
 echo "  "
-BASEURL=$1
+BASEURL=$(echo "$1" | sed 's/\/seg\-.*//g')
 URL=$BASEURL
 FILE=foo
-x=0
-match='seg\-[0-9]'
-repl="seg-1337"
 x=0
 mkdir tmp
 cd tmp
 while :
 do 
 x=$(( $x + 1 ))
-	repl="seg-$x"
-	URL=${BASEURL/$match/$repl}
+	URL="${BASEURL}/seg-${x}-v1-a1.ts"
 	FILE="*seg-$x*"
 	echo "file seg-$x.ts" >> filelist
 	#echo $URL
