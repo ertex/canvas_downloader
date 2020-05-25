@@ -1,27 +1,25 @@
+#!/bin/bash
+
 echo "  "
-BASEURL=$1
+BASEURL=$(echo "$1" | sed 's/\/seg\-.*//g')
 URL=$BASEURL
 FILE=foo
-x=0
-match='seg\-[0-9]'
-repl="seg-1337"
 x=0
 mkdir tmp
 cd tmp
 while :
 do 
 x=$(( $x + 1 ))
-	repl="seg-$x"
-	URL=${BASEURL/$match/$repl}
+	URL="${BASEURL}/seg-${x}-v1-a1.ts"
 	FILE="*seg-$x*"
 	echo "file seg-$x.ts" >> filelist
 	#echo $URL
 	wget -q $URL -O "seg-$x.ts"
 	if [ -s $FILE ]
 	then
-		echo "Segment : $x done"
+		echo -ne "Segment : $x done\r"
 	else
-		echo "Segment : $x not found, filename $FILE not found"
+		echo -e "\nSegment : $x not found, filename $FILE not found"
 		break
 	fi
 done
@@ -30,7 +28,7 @@ echo "finnished downloading on Segment $x"
 echo "starting mp4 conversion"
 echo "==================================="
 
-ffmpeg -f concat -i filelist -c copy ../output.mp4
+ffmpeg -loglevel 'fatal' -f concat -i filelist -c copy ../output.mp4
 cd ..
 rm -rf tmp
 echo "All done!"
