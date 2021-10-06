@@ -1,4 +1,9 @@
 #!/bin/bash
+if ! command -v ffmpeg > /dev/null
+then
+	echo "ffmpeg could not be found. please install ffmpeg to use"
+	exit
+fi
 
 echo "  "
 BASEURL=$(echo "$1" | sed 's/\/seg\-.*//g')
